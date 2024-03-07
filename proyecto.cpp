@@ -5,7 +5,7 @@
 #include <ctime>
 using namespace std;
 
-const size_t TAMANO = 10;
+const size_t TAMANO = 9;
 
 // Definicion de la clase Libro
 class Libro {
@@ -37,9 +37,9 @@ public:
 		this->sEstado = estado;
 		this->nPaginas = paginas;
 	}
-	// Metodos de obtencion de los atributos
+	// Devuelve el valor actual de un atributo.
 	int get_ISBN() const { return nISBN; }
-	void set_ISBN(int isbn) { nISBN = isbn; }
+	void set_ISBN(int isbn) { nISBN = isbn; }//Establece un nuevo valor para un atributo.
 	
 	string get_Titulo() const { return sTitulo; }
 	void set_Titulo(const string& titulo) { sTitulo = titulo; }
@@ -69,9 +69,9 @@ private:
 public:
 	Persona() {
 		this->nID = 0;
-		this->sNombre = "sin nombre";
-		this->sApellido = "sin apellido";
-		this->sEmail = "sin email";
+		this->sNombre = "";
+		this->sApellido = "";
+		this->sEmail = "";
 	}
 	// Constructor por parametros
 	Persona(int id, string nombre, string apellido, string email) {
@@ -140,7 +140,7 @@ public:
 	}
 	void llenar() {
 		string listaTitulo[] = {"el viejo y el mar", "rebelión en la granja", "la isla del tesoro", "el corazon de la luz", "aprende programacion", "inteligencia artificial", "ciberseguridad esencial", "javaScript moderno", "arduino proyectos"};
-		string listaAutor[] = {"Alejandro Gutiérrez", "Emiliano Dominguez", "Francisco Martínez", "Antonieta Hernández", "Cristobal Pausinis ", "Valentina Fernández", "Magdalena Carrasco", "Antonella Rodríguez "};
+		string listaAutor[] = {"Alejandro Gutiérrez", "Emiliano Dominguez", "Francisco Martínez", "Antonieta Hernández", "Cristobal Pausinis ", "Valentina Fernández", "Magdalena Carrasco", "Antonella Rodríguez ", "Daniel Esteban", "Maribel Torrez"};
 		string listaEstado[] = {"Prestado", "Reservado", "Disponible"};
 		string listaEditorial[] = {"Editorial Santillana", "Acantilado Editorial", "Editorial Alfaguara", "Editorial Planeta", "Anagrama Editorial", "Ediciones Sir", "Alianza Editorial", "Ediciones Siglo XXI"};
 		srand(time(nullptr)); // Inicializar la semilla del generador de números aleatorios
@@ -148,13 +148,13 @@ public:
 		for (int i = 0; i < TAMANO; i++) {
 			string tituloAleatorio;
 			do {
-				int indiceTitulo = rand() % 10; //generacion de numero randomico de 0 a 9
+				int indiceTitulo = rand() % 9; //generacion de numero randomico de 0 a 9
 				tituloAleatorio = listaTitulo[indiceTitulo];
 			} while (tituloRepetido(tituloAleatorio, tamanoActual)); // Verificar si el titulo esta repetido
 			int isbnAleatorio = i + 1;
 			int indiceAutor = rand() % 10;
-			int indiceEstado = rand() % 10;
-			int indiceEditorial= rand()% 10; 
+			int indiceEstado = rand() % 3;
+			int indiceEditorial= rand()% 8; 
 			int publicacionAleatoria = rand() % 25 + 1980; // Años entre 1980 y 2024
 			int paginasAleatorias = rand() % 500 + 100; // Paginas entre 100 y 599
 			string AutorAleatorio = listaAutor[indiceAutor];
@@ -165,16 +165,16 @@ public:
 		}
 	}
 	void mostrar() const {
-		if (tamanoActual == 0) { // Verifica si no hay libros llenados
-			cout << "Datos no llenados." << endl;
-			return;
-		}
-		//imprimir datos de los libros
-		cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Editorial" << setw(15) << "Estado" << setw(10) << "Paginas" << endl;
-		for (int i = 0; i < tamanoActual; i++) {
-			cout << left << setw(8) << libros[i].get_ISBN() << setw(25) << libros[i].get_Titulo() << setw(25) << libros[i].get_Autor() << setw(11) << libros[i].get_Publicacion() << setw(15) << libros[i].get_Editorial() << setw(10) << libros[i].get_Estado() << setw(10) << libros[i].get_Paginas() << endl;
-		}
-	}
+    if (tamanoActual == 0) { // Verifica si no hay libros llenados
+        cout << "Datos no llenados." << endl;
+        return;
+    }
+    // Imprimir datos de los libros
+    cout << setw(2) << right << "ISBN" << setw(15) << "Titulo" << setw(30) << "Autor" << setw(15) << "Anio" << setw(15) << "Editorial" << setw(25) << "Estado" << setw(25) << "Paginas" << endl;
+    for (int i = 0; i < tamanoActual; i++) {
+        cout << left << setw(5) << libros[i].get_ISBN() << setw(30) << libros[i].get_Titulo() << setw(25) << libros[i].get_Autor() << setw(10) << libros[i].get_Publicacion() << setw(30) << libros[i].get_Editorial() << setw(25) << libros[i].get_Estado() << setw(15) << libros[i].get_Paginas() << endl;
+    }
+}
 	// Función para mostrar los datos de los libros en forma de bloque
 	void mostrar(string bloque) const {
 		if (tamanoActual == 0) { // Verifica si no hay libros llenados
@@ -190,7 +190,8 @@ public:
 			cout << "Anio: " << libros[i].get_Publicacion() << endl; 
 			cout << "Editorial: " << libros[i].get_Editorial() << endl; 
 			cout << "Estado: " << libros[i].get_Estado() << endl;
-			cout << "Paginas: " << libros[i].get_Paginas() << endl << endl;
+			cout << "Paginas: " << libros[i].get_Paginas()  << endl;
+			cout<<"----------------------------------------------------------------------------------------------"<<endl;
 		}
 		cout << bloque << endl;
 	}
@@ -212,12 +213,12 @@ public:
 			string estadoMiniscula = convertir(libros[indice].get_Estado());
 			string busquedaMinuscula = convertir(busqueda);
 			if (indice == 0) { //mostrar el encabezado de la tabla
-				cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
+				cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(15) << "Editorial" << setw(20) << "Estado" << setw(20) << "Paginas" << endl;
 			}
 			// Verificar si la busqueda coincide con el titulo, autor, genero o precio
 			if (tituloMinuscula.find(busquedaMinuscula) != string::npos || autorMinuscula.find(busquedaMinuscula) != string::npos || editorialMinuscula.find(busquedaMinuscula) != string::npos || estadoMiniscula.find(busquedaMinuscula) != string::npos) {
 				//imprime los datos de los libros que coincidan con la busqueda
-				cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(15) << libros[indice].get_Editorial() << setw(10) << libros[indice].get_Estado() << setw(10) << libros[indice].get_Paginas() << endl;
+				cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(23) << libros[indice].get_Editorial() << setw(20) << libros[indice].get_Estado() << setw(20) << libros[indice].get_Paginas() << endl;
 				
 			}
 			buscar(indice + 1, fin, busqueda); // Llamada recursiva con el siguiente libro
@@ -253,9 +254,9 @@ public:
 			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
 			return;
 		}
-		cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Edad" << endl;
+		cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(28) << "Edad" << endl;
 		for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
-			cout << left << setw(15) << usuarios[i].get_ID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(15) << usuarios[i].get_Edad() << endl;
+			cout << left << setw(15) << usuarios[i].get_ID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(35) << usuarios[i].get_Edad() << endl;
 		}
 	}
 	// Función para mostrar los datos de los usuarios en forma de bloques
@@ -271,7 +272,8 @@ public:
 			cout << "Nombre: " << usuarios[i].get_Nombre() << endl;
 			cout << "Apellido: " << usuarios[i].get_Apellido() << endl;
 			cout << "Email: " << usuarios[i].get_Email() << endl;
-			cout << "Edad: " << usuarios[i].get_Edad() << endl << endl;
+			cout << "Edad: " << usuarios[i].get_Edad() << endl;
+			cout<<"----------------------------------------------------------------------------------------------"<<endl;
 		}
 	}
 	// Funcion para convertir una cadena a minusculas
@@ -292,7 +294,7 @@ public:
 			string edadStr = to_string(usuarios[inicio].get_Edad());
 			string busquedaMinuscula = convertir(busqueda);
 			if (inicio == 0) { //mostrar el encabezado de la tabla
-				cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
+				cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Edad" << endl;
 			}
 			// Verifica si la busqueda coincide con el nombre, apellido o nombre completo
 			if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || edadStr.find(busquedaMinuscula) != string::npos){
@@ -320,7 +322,7 @@ public:
 			int indiceNombre = rand() % 10; //generar numero randomico del 0 al 9
 			int indiceApellido = rand() % 10;
 			int idAleatorio = i + 1;
-			int indiceCargo= rand() % 10; // salario entre 1500 y 3000
+			int indiceCargo= rand() % 5 ; // salario entre 1500 y 3000
 			bibliotecarios[i] = Bibliotecario(idAleatorio, listaNombres[indiceNombre], listaApellidos[indiceApellido], listaNombres[indiceNombre] + listaApellidos[indiceApellido] + "@gmail.com", listaCargos[indiceCargo]);
 			tamanoActual++;
 		}
@@ -349,7 +351,8 @@ public:
 			cout << "Nombre: " << bibliotecarios[i].get_Nombre() << endl;
 			cout << "Apellido: " << bibliotecarios[i].get_Apellido() << endl;
 			cout << "Email: " << bibliotecarios[i].get_Email() << endl;
-			cout << "Cargo: " << bibliotecarios[i].get_Cargo()<< endl << endl;
+			cout << "Cargo: " << bibliotecarios[i].get_Cargo() << endl;
+			cout<<"----------------------------------------------------------------------------------------------"<<endl;
 		}
 	}
 	string convertir(const string& cadena) const { // Funcion para convertir una cadena a minusculas
@@ -400,22 +403,31 @@ void menuListados(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
 			if (respuesta == 's' || respuesta == 'S'){
 				gestorL.mostrar();
 			} else {
-				gestorL.mostrar("bloque");
+			    // Si la respuesta es negativa o cualquier otra cosa, llamar al método mostrar("BLOQUE") de gestorU
+                // Esto indica que se desea mostrar los datos de alguna manera específica, en este caso, usando la palabra "BLOQUE"
+				gestorL.mostrar("BLOQUE");
 			}
 		}  
 		break;
-		case 2:
-		{
-			char respuesta;
-			cout << "Desea ver los datos en forma de columna? (s/n): ";
-			cin >> respuesta;
-			if (respuesta == 's' || respuesta == 'S') {
-				gestorU.mostrar();
-			} else {
-				gestorU.mostrar("Bloque");
-			}
-		}
-		break;
+	    case 2:
+        {
+            char respuesta;
+            // Solicitar al usuario si desea ver los datos en forma de columna
+            cout << "Desea ver los datos en forma de columna? (s/n): ";
+            cin >> respuesta;
+        
+            // Evaluar la respuesta del usuario
+            if (respuesta == 's' || respuesta == 'S') {
+                // Si la respuesta es afirmativa ('s' o 'S'), llamar al método mostrar() de gestorU
+                gestorU.mostrar();
+            } else {
+                // Si la respuesta es negativa o cualquier otra cosa, llamar al método mostrar("BLOQUE") de gestorU
+                // Esto indica que se desea mostrar los datos de alguna manera específica, en este caso, usando la palabra "BLOQUE"
+                gestorU.mostrar("BLOQUE");
+            }
+        }
+        break;
+
 		case 3:
 		{
 			char respuesta;
@@ -424,7 +436,7 @@ void menuListados(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliote
 			if (respuesta == 's' || respuesta == 'S') {
 				gestorB.mostrar();
 			} else {
-				gestorB.mostrar("Bloque");
+				gestorB.mostrar("BLOQUE");
 			}
 		}
 		break;
@@ -499,7 +511,7 @@ void menuPrincipal(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliot
 		cin >> opcionPrincipal;
 		cin.ignore(); //Limpiar el buffer de entrada
 		switch (opcionPrincipal) {
-		case 1:
+		case 1:   // Llenar datos de libros, usuarios y bibliotecarios
 			gestorL.llenar();
 			gestorU.llenar();
 			gestorB.llenar();
