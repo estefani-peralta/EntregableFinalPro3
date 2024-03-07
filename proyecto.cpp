@@ -1,338 +1,531 @@
 #include <iostream>
-#include <iomanip>
 #include <string>
+#include <iomanip>
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
-
 using namespace std;
 
+const size_t TAMANO = 10;
+
+// Definicion de la clase Libro
 class Libro {
-	string strTitulo;
-	string strAutor;
+private:
 	int nISBN;
-	int nAnioPublicacion;
-	string strEditorial;
-	string strEstado; // Valores posibles: "disponible", "prestado", "reservado"
+	string sTitulo;
+	string sAutor;
+	int nPublicacion;
+	string sEditorial;
+	string sEstado; // Valores posibles: "disponible", "prestado", "reservado"
 	int nPaginas;
-	
 public:
 	Libro() {
-		strTitulo = generarTituloAleatorio();
-		strAutor = generarAutorAleatorio();
-		nISBN = generarISBNAleatorio();
-		nAnioPublicacion = generarAnioPublicacionAleatorio();
-		strEditorial = generarEditorialAleatorio();
-		strEstado = generarEstadoAleatorio();
-		nPaginas = generarPaginasAleatorio();
+		this->nISBN = 0;
+		this->sTitulo = "";
+		this->sAutor = "";
+		this->nPublicacion = 0;
+		this->sEditorial = "";
+		this->sEstado = "";
+		this->nPaginas = 0;
 	}
-	
-	int get_ISBN() { return nISBN; }
+	// Constructor por atributos
+	Libro(int isbn, string titulo, string autor, int publicacion, string  editorial, string estado, int paginas) {
+		this->nISBN = isbn;
+		this->sTitulo = titulo;
+		this->sAutor = autor;
+		this->nPublicacion = publicacion;
+		this->sEditorial = editorial;
+		this->sEstado = estado;
+		this->nPaginas = paginas;
+	}
+	// Metodos de obtencion de los atributos
+	int get_ISBN() const { return nISBN; }
 	void set_ISBN(int isbn) { nISBN = isbn; }
 	
-	string get_Titulo() { return strTitulo; }
-	void set_Titulo(string titulo) { strTitulo = titulo; }
+	string get_Titulo() const { return sTitulo; }
+	void set_Titulo(const string& titulo) { sTitulo = titulo; }
 	
-	string get_Autor() const { return strAutor; }
-	void set_Autor(string autor) { strAutor = autor; }
+	string get_Autor() const { return sAutor; }
+	void set_Autor(const string& autor) { sAutor = autor; }
 	
-	int get_AnioPublicacion() { return nAnioPublicacion; }
-	void set_AnioPublicacion(int anio) { nAnioPublicacion = anio; }
+	int get_Publicacion() const { return nPublicacion; }
+	void set_Publicacion(int publicacion) { nPublicacion = publicacion; }
 	
-	string get_Editorial() { return strEditorial; }
-	void set_Editorial(string editorial) { strEditorial = editorial; }
+	string get_Editorial() const { return sEditorial; }
+	void set_Editorial(const string& editorial) { sEditorial = editorial; }
 	
-	string get_Estado() { return strEstado; }
-	void set_Estado(string estado) { strEstado = estado; }
+	string get_Estado() const { return sEstado; }
+	void set_Estado(const string& estado) { sEstado = estado; }
 	
-	int get_Paginas() { return nPaginas; }
+	int get_Paginas() const { return nPaginas; }
 	void set_Paginas(int paginas) { nPaginas = paginas; }
-	
-	string generarTituloAleatorio() {
-		string arrTitulos[] = {"el viejo y el mar", "rebelión en la granja", "la isla del tesoro", "el corazón de la luz", "aprende programación", "inteligencia artificial", "ciberseguridad esencial", "javaScript moderno", "arduino proyectos"};
-		int indice = rand() % (sizeof(arrTitulos) / sizeof(arrTitulos[0]));
-		return arrTitulos[indice];
-	}
-	
-	string generarAutorAleatorio() {
-		string arrNombresAutores[] = {"Alejandro", "Emiliano", "Francisco", "Antonieta", "Cristobal", "Valentina", "Magdalena", "Antonella"};
-		string arrApellidosAutores[] = {"Gutiérrez", "Dominguez", "Martínez", "Hernández", "Pausinis", "Fernández", "Carrasco", "Rodríguez"};
-		int indice = rand() % (sizeof(arrNombresAutores) / sizeof(arrNombresAutores[0]));
-		return arrNombresAutores[indice] + " " + arrApellidosAutores[indice];
-	}
-	
-	int generarISBNAleatorio() {
-		static int isbn = 0;
-		isbn = rand() % 1000 + 1; // Reiniciar isbn con un valor aleatorio entre 1 y 1000
-		return isbn++;
-	}
-	
-	
-	
-	
-	int generarAnioPublicacionAleatorio() {
-		int anioMinimo = 1845;
-		int anioMaximo = 2020;
-		return anioMinimo + rand() % (anioMaximo - anioMinimo + 1);
-	}
-	
-	string generarEditorialAleatorio() {
-		string arrEditoriales[] = {"Editorial Santillana", "Acantilado Editorial", "Editorial Alfaguara", "Editorial Planeta", "Anagrama Editorial", "Ediciones Sir", "Alianza Editorial", "Ediciones Siglo XXI"};
-		int indice = rand() % (sizeof(arrEditoriales) / sizeof(arrEditoriales[0]));
-		return arrEditoriales[indice];
-	}
-	
-	string generarEstadoAleatorio() {
-		string arrEstados[] = {"Prestado", "Reservado", "Disponible"};
-		int indice = rand() % (sizeof(arrEstados) / sizeof(arrEstados[0]));
-		return arrEstados[indice];
-	}
-	
-	int generarPaginasAleatorio() {
-		int paginaMinima = 300;
-		int paginaMaxima = 400;
-		return paginaMinima + rand() % (paginaMaxima - paginaMinima + 1);
-	}
-	
-	void mostrarDatos() {
-		cout << "ISBN:" << setw(5) << get_ISBN()
-			<< "\tTitulo:" << setw(25) << get_Titulo()
-			<< "\tAutor:" << setw(25) << get_Autor()
-			<< "\tAño publicacion:" << setw(5) << get_AnioPublicacion()
-			<< "\tEditorial:" << setw(25) << get_Editorial()
-			<< "\tPaginas:" << setw(5) << get_Paginas() << endl;
-	}
-	
-	void mostrarDatos(string t) {
-		cout << get_ISBN() << "\t\t" << get_Titulo() << "\t\t" << get_Autor() << "\t\t" << get_AnioPublicacion() << "\t\t"
-			<< get_Editorial() << "\t\t" << get_Paginas() << endl;
-	}
-	
-	
 };
-
-class Usuario {
-	int nUserID;
-	string strNombre;
-	string strApellido;
-	string strEmail;
-	int nEdad;
+// Definicion de la clase Persona
+class Persona {
+private:
+	int nID;
+	string sNombre;
+	string sApellido;
+	string sEmail;
+public:
+	Persona() {
+		this->nID = 0;
+		this->sNombre = "sin nombre";
+		this->sApellido = "sin apellido";
+		this->sEmail = "sin email";
+	}
+	// Constructor por parametros
+	Persona(int id, string nombre, string apellido, string email) {
+		this->nID = id;
+		this->sNombre = nombre;
+		this->sApellido = apellido;
+		this->sEmail = email;
+	}
+	// Metodos de obtencion de los atributos
+	int get_ID() const { return nID; }
+	void set_ID(int id) { nID = id;}
 	
+	string get_Nombre() const { return sNombre; }
+	void set_Nombre(const string& nombre) { sNombre = nombre; }
+	
+	string get_Apellido() const { return sApellido; }
+	void set_Apellido(const string& apellido) { sApellido = apellido; }
+	
+	string get_Email() const { return sEmail; }
+	void set_Email(const string& email) { sEmail = email; }
+};
+// Definicion de la clase Usuario
+class Usuario : public Persona {
+private:
+	int nEdad;
 public:
 	Usuario() {
-		nUserID = generarUserIDAleatorio();
-		strNombre = generarNombreAleatorio();
-		strApellido = generarApellidoAleatorio();
-		strEmail = generarEmail(strNombre, strApellido);
-		nEdad = generarEdadAleatoria();
+		this->nEdad = 0;
 	}
-	
-	int get_UserID() { return nUserID; }
-	void set_UserID(int userID) { nUserID = userID; }
-	
-	string get_Nombre() { return strNombre; }
-	void set_Nombre(string nombre) { strNombre = nombre; }
-	
-	string get_Apellido() { return strApellido; }
-	void set_Apellido(string apellido) { strApellido = apellido; }
-	
-	string get_Email() { return strEmail; }
-	void set_Email(string email) { strEmail = email; }
-	
-	int get_Edad() { return nEdad; }
+		//constructor por parametros
+	Usuario(int id, string nombre, string apellido, string email, int edad): Persona(id, nombre, apellido, email){
+		this->nEdad=edad;
+	}
+	int get_Edad() const{ return nEdad; }
 	void set_Edad(int edad) { nEdad = edad; }
-	
-	int generarUserIDAleatorio() {
-		static int userID = 0;
-		return ++userID;
-	}
-	
-	string generarNombreAleatorio() {
-		string arrNombres[] = {"Gabriela", "Isabella", "Valentina", "Fernando", "Benjamin", "Jhonatan", "Leonardo", "Salvador"};
-		int indice = rand() % (sizeof(arrNombres) / sizeof(arrNombres[0]));
-		return arrNombres[indice];
-	}
-	
-	string generarApellidoAleatorio() {
-		string arrApellidos[] = {"González", "Montanese", "Martínez", "Pausinis", "Rodríguez", "Villegas", "Fernández", "Clemente"};
-		int indice = rand() % (sizeof(arrApellidos) / sizeof(arrApellidos[0]));
-		return arrApellidos[indice];
-	}
-	
-	string generarEmail(string nombre, string apellido) {
-		string email = nombre + apellido + "@gmail.com";
-		return email;
-	}
-	
-	int generarEdadAleatoria() {
-		int edadMinima = 18;
-		int edadMaxima = 65;
-		return edadMinima + rand() % (edadMaxima - edadMinima + 1);
-	}
-	
-	void mostrarDatos() {
-		cout << "ID:" << get_UserID() << endl;
-		cout << "Nombre:" << get_Nombre() << endl;
-		cout << "Apellido:" << get_Apellido() << endl;
-		cout << "Email:" << get_Email() << endl;
-		cout << "Edad:" << get_Edad() << endl;
-	}
-	
-	void mostrarDatos(string t) {
-		cout << get_UserID() << "\t\t" << get_Nombre() << "\t\t" << get_Apellido() << "\t\t" << get_Email() << "\t\t" << get_Edad() << endl;
-	}
-	
-	
 };
-
-class Bibliotecario : public Usuario {
-	string strCargo;
-	
+// Definicion de la clase Bibliotecario
+class Bibliotecario : public Persona {
+private:
+	string sCargo;
 public:
 	Bibliotecario() {
-		strCargo = generarCargoAleatorio();
+		this->sCargo = 0.0;
+	}	
+	//constructor por parametros
+	Bibliotecario(int id, string nombre, string apellido, string email, string cargo): Persona(id, nombre, apellido, email){
+		this->sCargo=cargo;
 	}
-	
-	string get_cargo() { return strCargo; }
-	void set_cargo(string cargo) { strCargo = cargo; }
-	
-	string generarCargoAleatorio() {
-		string arrCargos[] = {"Bibliotecario Infantil", "Asistente de Referencia", "Auxiliar de Biblioteca", "Encargado de Adquisiciones", "Coordinador de Programas Educativos"};
-		int indice = rand() % (sizeof(arrCargos) / sizeof(arrCargos[0]));
-		return arrCargos[indice];
-	}
-	
-	void mostrarDatos() {
-		cout << "ID:" << get_UserID() << endl;
-		cout << "Nombre:" << get_Nombre() << endl;
-		cout << "Apellido:" << get_Apellido() << endl;
-		cout << "Email:" << get_Email() << endl;
-		cout << "Cargo:" << get_cargo() << endl;
-	}
-	
-	void mostrarDatos(string t) {
-		cout << get_UserID() << "\t\t" << get_Nombre() << "\t\t" << get_Apellido() << "\t\t" << get_Email() << "\t\t" << get_cargo() << endl;
-	}
-	
+	string get_Cargo() const{ return sCargo; }
+	void set_Cargo(const string& cargo) { sCargo = cargo; }
 };
-
-void submenuListados(Libro libros[], Usuario usuarios[], Bibliotecario bibliotecarios[], const int tam, int formatoGeneral) {
-	char opcionListados;
+// DefiniciÃ³n de la clase GestorLibros
+class GestorLibros {
+private:
+	Libro libros[TAMANO];
+	int tamanoActual;
+public:
+	GestorLibros() : tamanoActual(0) {}
+	bool tituloRepetido(const string& titulo, int cantidad) const {
+		for (int i = 0; i < cantidad; i++) {
+			if (titulo == libros[i].get_Titulo()) {
+				return true; // Si el titulo esta repetido
+			}
+		}
+		return false; // Si el titulo no esta repetido
+	}
+	void llenar() {
+		string listaTitulo[] = {"el viejo y el mar", "rebeliÃ³n en la granja", "la isla del tesoro", "el corazon de la luz", "aprende programacion", "inteligencia artificial", "ciberseguridad esencial", "javaScript moderno", "arduino proyectos"};
+		string listaAutor[] = {"Alejandro GutiÃ©rrez", "Emiliano Dominguez", "Francisco MartÃ­nez", "Antonieta HernÃ¡ndez", "Cristobal Pausinis ", "Valentina FernÃ¡ndez", "Magdalena Carrasco", "Antonella RodrÃ­guez "};
+		string listaEstado[] = {"Prestado", "Reservado", "Disponible"};
+		string listaEditorial[] = {"Editorial Santillana", "Acantilado Editorial", "Editorial Alfaguara", "Editorial Planeta", "Anagrama Editorial", "Ediciones Sir", "Alianza Editorial", "Ediciones Siglo XXI"};
+		srand(time(nullptr)); // Inicializar la semilla del generador de nÃºmeros aleatorios
+		tamanoActual = 0; // Reiniciar el contador para llenar desde el principio
+		for (int i = 0; i < TAMANO; i++) {
+			string tituloAleatorio;
+			do {
+				int indiceTitulo = rand() % 10; //generacion de numero randomico de 0 a 9
+				tituloAleatorio = listaTitulo[indiceTitulo];
+			} while (tituloRepetido(tituloAleatorio, tamanoActual)); // Verificar si el titulo esta repetido
+			int isbnAleatorio = i + 1;
+			int indiceAutor = rand() % 10;
+			int indiceEstado = rand() % 10;
+			int indiceEditorial= rand()% 10; 
+			int publicacionAleatoria = rand() % 25 + 1980; // AÃ±os entre 1980 y 2024
+			int paginasAleatorias = rand() % 500 + 100; // Paginas entre 100 y 599
+			string AutorAleatorio = listaAutor[indiceAutor];
+			string EditorialAleatorio = listaEditorial[indiceEditorial];
+			string EstadoAleatorio= listaEstado[indiceEstado];
+			libros[i] = Libro(isbnAleatorio, tituloAleatorio,AutorAleatorio , publicacionAleatoria,EditorialAleatorio , EstadoAleatorio, paginasAleatorias);
+			tamanoActual++;
+		}
+	}
+	void mostrar() const {
+		if (tamanoActual == 0) { // Verifica si no hay libros llenados
+			cout << "Datos no llenados." << endl;
+			return;
+		}
+		//imprimir datos de los libros
+		cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Editorial" << setw(15) << "Estado" << setw(10) << "Paginas" << endl;
+		for (int i = 0; i < tamanoActual; i++) {
+			cout << left << setw(8) << libros[i].get_ISBN() << setw(25) << libros[i].get_Titulo() << setw(25) << libros[i].get_Autor() << setw(11) << libros[i].get_Publicacion() << setw(15) << libros[i].get_Editorial() << setw(10) << libros[i].get_Estado() << setw(10) << libros[i].get_Paginas() << endl;
+		}
+	}
+	// FunciÃ³n para mostrar los datos de los libros en forma de bloque
+	void mostrar(string bloque) const {
+		if (tamanoActual == 0) { // Verifica si no hay libros llenados
+			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+			return;
+		}
+		cout << "Datos de libros en bloques: " << endl;
+		for (int i = 0; i < tamanoActual; i++) {
+			
+			cout << "ISBN: " << libros[i].get_ISBN() << endl;
+			cout << "Titulo: " << libros[i].get_Titulo() << endl; 
+			cout << "Autor: " << libros[i].get_Autor() << endl;
+			cout << "Anio: " << libros[i].get_Publicacion() << endl; 
+			cout << "Editorial: " << libros[i].get_Editorial() << endl; 
+			cout << "Estado: " << libros[i].get_Estado() << endl;
+			cout << "Paginas: " << libros[i].get_Paginas() << endl << endl;
+		}
+		cout << bloque << endl;
+	}
+	// Funcion para convertir una cadena a minusculas
+	string convertir(const string& cadena) const {
+		string resultado = cadena;
+		for (char& c : resultado) {
+			c = tolower(c);
+		}
+		return resultado;
+	}
+	// Funcion recursiva para buscar libros por titulo
+	void buscar(int indice, int fin, const string& busqueda) const {
+		if (indice < fin) { //condicion base
+			// Convertir a minÃºsculas los atributos del libro y la cadena de bÃºsqueda
+			string tituloMinuscula = convertir(libros[indice].get_Titulo());
+			string autorMinuscula = convertir(libros[indice].get_Autor());
+			string editorialMinuscula = convertir(libros[indice].get_Editorial());
+			string estadoMiniscula = convertir(libros[indice].get_Estado());
+			string busquedaMinuscula = convertir(busqueda);
+			if (indice == 0) { //mostrar el encabezado de la tabla
+				cout << setw(2) << right << "ISBN" << setw(10) << "Titulo" << setw(24) << "Autor" << setw(24) << "Anio" << setw(13) << "Genero" << setw(15) << "Precio" << setw(10) << "Paginas" << endl;
+			}
+			// Verificar si la busqueda coincide con el titulo, autor, genero o precio
+			if (tituloMinuscula.find(busquedaMinuscula) != string::npos || autorMinuscula.find(busquedaMinuscula) != string::npos || editorialMinuscula.find(busquedaMinuscula) != string::npos || estadoMiniscula.find(busquedaMinuscula) != string::npos) {
+				//imprime los datos de los libros que coincidan con la busqueda
+				cout << left << setw(8) << libros[indice].get_ISBN() << setw(25) << libros[indice].get_Titulo() << setw(25) << libros[indice].get_Autor() << setw(11) << libros[indice].get_Publicacion() << setw(15) << libros[indice].get_Editorial() << setw(10) << libros[indice].get_Estado() << setw(10) << libros[indice].get_Paginas() << endl;
+				
+			}
+			buscar(indice + 1, fin, busqueda); // Llamada recursiva con el siguiente libro
+		}
+	}
+};
+// Definicion de la clase GestorUsuarios
+class GestorUsuarios {
+private:
+	Usuario usuarios[TAMANO];
+	int tamanoActual;
+public:
+	GestorUsuarios() : tamanoActual(0) {}
+	void llenar() { // Funcion para llenar el arreglo de usuarios con datos aleatorios
+		string listaNombres[] = {"Juan", "Maria", "Luis", "Ana", "Carlos", "Laura", "Pedro", "Elena", "Javier", "Sofia"};
+		string listaApellidos[] = {"Peralta", "Osinaga", "Rodriguez", "Escobar", "Lopez", "Gonzalez", "Mendoza", "Roca", "Garcia", "Torres"};
+		srand(time(nullptr)); // Inicializar la semilla del generador de nÃºmeros aleatorios
+		tamanoActual = 0; // Reiniciar el contador para llenar desde el principio
+		for (int i = 0; i < TAMANO; ++i) {
+			int indiceNombre = rand() % 10; //generacion de numero randomico de 0 al 9
+			int indiceApellido = rand() % 10; //generacion de numero randomico de 0 al 9
+			int idAleatorio = i + 1;
+			int edadAleatorio = (rand() % 13) + 18;
+			string nombreAleatorio = listaNombres[indiceNombre];
+			string apellidoAleatorio = listaApellidos[indiceApellido];
+			string emailAleatorio = nombreAleatorio + apellidoAleatorio + "@gmail.com";
+			usuarios[i] = Usuario(idAleatorio, nombreAleatorio, apellidoAleatorio, emailAleatorio, edadAleatorio);
+			tamanoActual++; // Incrementar el contador de usuarios
+		}
+	}
+	void mostrar() const {  // Funcion para mostrar los datos de los usuarios en forma de tabla
+		if (tamanoActual == 0) { // Verificar si no hay usuarios para mostrar
+			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+			return;
+		}
+		cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Edad" << endl;
+		for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
+			cout << left << setw(15) << usuarios[i].get_ID() << setw(15) << usuarios[i].get_Nombre() << setw(15) << usuarios[i].get_Apellido() << setw(30) << usuarios[i].get_Email() << setw(15) << usuarios[i].get_Edad() << endl;
+		}
+	}
+	// FunciÃ³n para mostrar los datos de los usuarios en forma de bloques
+	void mostrar(string bloque) const {
+		if (tamanoActual == 0) { // Verificar si no hay usuarios para mostrar
+			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+			return;
+		}
+		cout << "Datos de Usuarios en Bloques:" << endl;
+		for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los usuarios
+			//cout << "Usuario " << i+1 << ":" << endl;
+			cout << "User ID: " << usuarios[i].get_ID() << endl;
+			cout << "Nombre: " << usuarios[i].get_Nombre() << endl;
+			cout << "Apellido: " << usuarios[i].get_Apellido() << endl;
+			cout << "Email: " << usuarios[i].get_Email() << endl;
+			cout << "Edad: " << usuarios[i].get_Edad() << endl << endl;
+		}
+	}
+	// Funcion para convertir una cadena a minusculas
+	string convertir(const string& cadena) const { 
+		string resultado = cadena;
+		for (char& c : resultado) {
+			c = tolower(c);
+		}
+		return resultado;
+	}
+	// Funcion recursiva para buscar usuarios por nombre, apellido o nombre completo
+	void buscar(int inicio, int fin, const string& busqueda) const {
+		if (inicio < fin) {  //condicion base
+			// Convertir a minusculas los atributos del usuario y la cadena de busqueda
+			string nombreMinuscula = convertir(usuarios[inicio].get_Nombre()); //convertir las cadenas a minusculas
+			string apellidoMinuscula = convertir(usuarios[inicio].get_Apellido());
+			string emailMinuscula = convertir(usuarios[inicio].get_Email());
+			string edadStr = to_string(usuarios[inicio].get_Edad());
+			string busquedaMinuscula = convertir(busqueda);
+			if (inicio == 0) { //mostrar el encabezado de la tabla
+				cout << setw(5) << right << "User ID" << setw(14) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Celular" << endl;
+			}
+			// Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+			if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || edadStr.find(busquedaMinuscula) != string::npos){
+				// Imprimir los datos del usuario que coincidan con la busqueda
+				cout << left << setw(15) << usuarios[inicio].get_ID() << setw(15) << usuarios[inicio].get_Nombre() << setw(15) << usuarios[inicio].get_Apellido() << setw(30) << usuarios[inicio].get_Email() << setw(15) << usuarios[inicio].get_Edad() << endl;
+			}
+			buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente usuario
+		}
+	}
+};
+// Definicion de la clase GestorBibliotecarios
+class GestorBibliotecarios {
+private:
+	Bibliotecario bibliotecarios[TAMANO];
+	int tamanoActual;
+public:
+	GestorBibliotecarios() : tamanoActual(0) {}
+	void llenar() { // FunciÃ³n para llenar el arreglo de bibliotecarios con datos aleatorios
+		string listaNombres[] = {"Santiago", "Belen", "Luz", "Isabel", "Fabian", "Carla", "Sergio", "Gustavo", "Mario", "Melanie"};
+		string listaApellidos[] = {"Leon", "Roca", "Justiniano", "Soliz", "Rivero", "Torrico", "Cuellar", "Tantani", "Rivas", "Roque"};
+		string listaCargos[] = {"Bibliotecario Infantil", "Asistente de Referencia", "Auxiliar de Biblioteca", "Encargado de Adquisiciones", "Coordinador de Programas Educativos"};
+		srand(time(nullptr)); // Inicializar la semilla del generador de nÃºmeros aleatorios
+		tamanoActual = 0; // Reiniciar el contador para llenar desde el principio
+		for (int i = 0; i < TAMANO; ++i) {
+			int indiceNombre = rand() % 10; //generar numero randomico del 0 al 9
+			int indiceApellido = rand() % 10;
+			int idAleatorio = i + 1;
+			int indiceCargo= rand() % 10; // salario entre 1500 y 3000
+			bibliotecarios[i] = Bibliotecario(idAleatorio, listaNombres[indiceNombre], listaApellidos[indiceApellido], listaNombres[indiceNombre] + listaApellidos[indiceApellido] + "@gmail.com", listaCargos[indiceCargo]);
+			tamanoActual++;
+		}
+	}
+	void mostrar() const {  // Funcion para mostrar los datos de los bibliotecarios en forma de tabla
+		if (tamanoActual == 0) { // Verificar si no hay bibliotecarios para mostrar
+			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+			return;
+		}
+		//imprimir datos de los bibliotecarios
+		cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Cargo" << endl;
+		for (int i = 0; i < tamanoActual; ++i) {
+			cout << left << setw(15) << bibliotecarios[i].get_ID() << setw(15) << bibliotecarios[i].get_Nombre() << setw(15) << bibliotecarios[i].get_Apellido() << setw(30) << bibliotecarios[i].get_Email() << bibliotecarios[i].get_Cargo() << endl;
+		}
+	}
+	// FunciÃ³n para mostrar los datos de los bibliotecarios en forma de bloques
+	void mostrar(string bloque) const {
+		if (tamanoActual == 0) {  // Verificar si no hay bibliotecarios para mostrar
+			cout << "Datos no llenados." << endl; // Mostrar mensaje si no hay datos
+			return;
+		}
+		cout << "Datos de Bibliotecarios en Bloques:" << endl;
+		for (int i = 0; i < tamanoActual; ++i) { //imprimir datos de los bibliotecarios
+			//cout << "Bibliotecario " << i+1 << ":" << endl;
+			cout << "Employee ID: " << bibliotecarios[i].get_ID() << endl;
+			cout << "Nombre: " << bibliotecarios[i].get_Nombre() << endl;
+			cout << "Apellido: " << bibliotecarios[i].get_Apellido() << endl;
+			cout << "Email: " << bibliotecarios[i].get_Email() << endl;
+			cout << "Cargo: " << bibliotecarios[i].get_Cargo()<< endl << endl;
+		}
+	}
+	string convertir(const string& cadena) const { // Funcion para convertir una cadena a minusculas
+		string resultado = cadena;
+		for (char& c : resultado) {
+			c = tolower(c);
+		}
+		return resultado;
+	}
+	// Funcion recursiva para buscar bibliotecarios por nombre, apellido o nombre completo
+	void buscar(int inicio, int fin, const string& busqueda) const {
+		if (inicio < fin) { //condicion base
+			// Convertir a minusculas los atributos del bibliotecario y la cadena de busqueda
+			string nombreMinuscula = convertir(bibliotecarios[inicio].get_Nombre());
+			string apellidoMinuscula = convertir(bibliotecarios[inicio].get_Apellido());
+			string emailMinuscula = convertir(bibliotecarios[inicio].get_Email());
+			string cargoMiniscula= convertir(bibliotecarios[inicio].get_Cargo());
+			string busquedaMinuscula = convertir(busqueda);
+			if (inicio == 0) { //mostrar el encabezado de la tabla
+				cout << setw(5) << right << "Employee ID" << setw(10) << "Nombre" << setw(17) << "Apellido" << setw(12) << "Email" << setw(32) << "Cargo" << endl;
+			}
+			// Verifica si la busqueda coincide con el nombre, apellido o nombre completo
+			if (nombreMinuscula.find(busquedaMinuscula) != string::npos || apellidoMinuscula.find(busquedaMinuscula) != string::npos || (nombreMinuscula + " " + apellidoMinuscula).find(busquedaMinuscula) != string::npos || emailMinuscula.find(busquedaMinuscula) != string::npos || cargoMiniscula.find(busquedaMinuscula) != string::npos) {
+				// Imprimir los datos del bibliotecario que coincidan con la busqueda
+				cout << left << setw(15) << bibliotecarios[inicio].get_ID() << setw(15) << bibliotecarios[inicio].get_Nombre() << setw(15) << bibliotecarios[inicio].get_Apellido() << setw(30) << bibliotecarios[inicio].get_Email() << bibliotecarios[inicio].get_Cargo()<< endl;
+			}
+			buscar(inicio + 1, fin, busqueda); //llamada recursiva con el siguiente bibliotecario
+		}
+	}
+};
+// Menu para mostrar los listados
+void menuListados(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliotecarios& gestorB) {
+	int opcionListados;
 	do {
-		cout << "SUBMENU LISTADOS" << endl;
-		cout << "A) Listado de Libros" << endl;
-		cout << "B) Listado Usuarios" << endl;
-		cout << "C) Listado Bibliotecarios" << endl;
-		cout << "X) Salir" << endl;
-		cout << "Ingrese su opción: ";
+		cout << "\nSubmenu de Listados:" << endl;
+		cout << "1. Listado de Libros" << endl;
+		cout << "2. Listado de Usuarios" << endl;
+		cout << "3. Listado de Bibliotecarios" << endl;
+		cout << "0. Volver al Menu Principal" << endl;
+		cout << "Ingrese la opcion: ";
 		cin >> opcionListados;
-		
 		switch (opcionListados) {
-		case 'A':
-			cout << "LISTADO DE LIBROS" << endl;
-			if (formatoGeneral == 1) {
-				for (int i = 0; i < tam; ++i) {
-					libros[i].mostrarDatos();
-				}
-			} else {
-				cout << setw(5) << "ISBN" << setw(25) << "Titulo" << setw(25) << "Autor" << setw(8) << "Año" << setw(25) << "Editorial" << setw(8) << "Páginas" << endl;
-				for (int i = 0; i < tam; ++i) {
-					libros[i].mostrarDatos("columna");
-				}
-			}
-			break;
-			
-		case 'B':
-			cout << "LISTADO DE USUARIOS" << endl;
-			if (formatoGeneral == 1) {
-				for (int i = 0; i < tam; ++i) {
-					usuarios[i].mostrarDatos();
-				}
-			} else {
-				cout << setw(5) << "ID" << setw(15) << "Nombre" << setw(15) << "Apellido" << setw(20) << "Email" << setw(5) << "Edad" << endl;
-				for (int i = 0; i < tam; ++i) {
-					usuarios[i].mostrarDatos("columna");
-				}
-			}
-			break;
-			
-		case 'C':
-			cout << "LISTADO DE BIBLIOTECARIOS" << endl;
-			if (formatoGeneral == 1) {
-				for (int i = 0; i < tam; ++i) {
-					bibliotecarios[i].mostrarDatos();
-				}
-			} else {
-				cout << setw(5) << "ID" << setw(15) << "Nombre" << setw(15) << "Apellido" << setw(20) << "Email" << setw(20) << "Cargo" << endl;
-				for (int i = 0; i < tam; ++i) {
-					bibliotecarios[i].mostrarDatos("columna");
-				}
-			}
-			break;
-			
-		case 'X':
-			cout << "Saliendo del submenu de listados." << endl;
-			break;
-		default:
-			cout << "Opción no válida. Intente de nuevo." << endl;
-		}
-	} while (opcionListados != 'X');
-}
-
-
-
-
-int main() {
-	const int tam = 8;
-	Libro libros[tam];
-	Usuario usuarios[tam];
-	Bibliotecario bibliotecarios[tam];
-	int opcion;
-	int formatoGeneral;  // Nueva variable para el formato
-	
-	do {
-		cout << "MENU" << endl;
-		cout << "1) Llenado de datos" << endl;
-		cout << "2) Listados" << endl;
-		cout << "0) Salir" << endl;
-		cout << "Ingrese su opción: ";
-		cin >> opcion;
-		
-		switch (opcion) {
 		case 1:
-			// Llenado de datos orientado a objetos
-			for (int i = 0; i < tam; ++i) {
-				libros[i] = Libro();
-				usuarios[i] = Usuario();
-				bibliotecarios[i] = Bibliotecario();
+		{
+			char respuesta;
+			cout << "Desea ver los datos en forma de columna? (s/n): ";
+			cin >> respuesta;
+			if (respuesta == 's' || respuesta == 'S'){
+				gestorL.mostrar();
+			} else {
+				gestorL.mostrar("bloque");
 			}
-			cout << "Datos llenados correctamente." << endl;
-			break;
-			
+		}  
+		break;
 		case 2:
-			// Verifica si los datos se han llenado antes de mostrar los listados
-			if (libros[0].get_Titulo().empty()) {
-				cout << "Debe llenar los datos primero." << endl;
-				break;
+		{
+			char respuesta;
+			cout << "Desea ver los datos en forma de columna? (s/n): ";
+			cin >> respuesta;
+			if (respuesta == 's' || respuesta == 'S') {
+				gestorU.mostrar();
+			} else {
+				gestorU.mostrar("Bloque");
 			}
-			
-			cout << "Elija el formato de presentación:" << endl;
-			cout << "1) Columna" << endl;
-			cout << "2) Horizontal" << endl;
-			cout << "Ingrese su opción: ";
-			cin >> formatoGeneral;
-			
-			submenuListados(libros, usuarios, bibliotecarios, tam, formatoGeneral);
-			break;
-			
-		case 0:
-			cout << "Saliendo del programa. ¡Hasta luego!" << endl;
-			break;
-			
-		default:
-			cout << "Opción no válida. Intente de nuevo." << endl;
 		}
-	} while (opcion != 0);
-	
+		break;
+		case 3:
+		{
+			char respuesta;
+			cout << "Desea ver los datos en forma de columna? (s/n): ";
+			cin >> respuesta;
+			if (respuesta == 's' || respuesta == 'S') {
+				gestorB.mostrar();
+			} else {
+				gestorB.mostrar("Bloque");
+			}
+		}
+		break;
+		case 0:
+			cout << "Volviendo al Menu Principal..." << endl;
+			break;
+		default:
+			cout << "Opcion invalida. Intente de nuevo." << endl;
+		}
+	} while (opcionListados != 0);
+}
+// Menu para realizar busquedas
+void menuBusqueda(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliotecarios& gestorB) {
+	int opcionBusqueda;
+	do {
+		cout << "\nSubmenu de Busqueda:" << endl;
+		cout << "1. Busqueda de Libro" << endl;
+		cout << "2. Busqueda de Usuario" << endl;
+		cout << "3. Busqueda de Bibliotecario" << endl;
+		cout << "0. Volver al Menu Principal" << endl;
+		cout << "Ingrese la opcion: ";
+		cin >> opcionBusqueda;
+		switch (opcionBusqueda) {
+		case 1:
+		{
+			string sBusquedaL;
+			cout << "Ingrese el titulo del libro que desea buscar: ";
+			cin.ignore(); // Limpiar el buffer de entrada
+			getline(cin, sBusquedaL); // Leer la cadena de bÃºsqueda
+			cout << "\nResultados de la busqueda:" << endl;
+			gestorL.buscar(0, TAMANO, sBusquedaL); // Realizar la busqueda de libros
+		}
+		break;
+		case 2:
+		{
+			string sBusquedaU;
+			cout << "Ingrese el nombre, apellido o nombre completo: ";
+			cin.ignore(); // Limpiar el buffer de entrada
+			getline(cin, sBusquedaU); // Leer la cadena de bÃºsqueda
+			cout << "\nResultados de la busqueda:" << endl;
+			gestorU.buscar(0, TAMANO, sBusquedaU); // Realizar la busqueda de usuarios
+		}
+		break;
+		case 3:
+		{
+			string sBusquedaB;
+			cout << "Ingrese el nombre, apellido o nombre completo: ";
+			cin.ignore(); // Limpiar el buffer de entrada
+			getline(cin, sBusquedaB); // Leer la cadena de bÃºsqueda
+			cout << "\nResultados de la busqueda:" << endl;
+			gestorB.buscar(0, TAMANO, sBusquedaB); // Realizar la busqueda de usuarios
+		}
+		break;
+		case 0:
+			cout << "Volviendo al Menu Principal..." << endl;
+			break;
+		default:
+			cout << "Opcion invalida. Intente de nuevo." << endl;
+		}
+	} while (opcionBusqueda != 0);
+}
+// Menu principal
+void menuPrincipal(GestorLibros& gestorL, GestorUsuarios& gestorU, GestorBibliotecarios& gestorB) {
+	int opcionPrincipal;
+	do {
+		cout << "\nMenu Principal:" << endl;
+		cout << "1. Llenar Datos" << endl;
+		cout << "2. Listados" << endl;
+		cout << "3. Busqueda" << endl;
+		cout << "0. Salir" << endl;
+		cout << "Ingrese la opcion: ";
+		cin >> opcionPrincipal;
+		cin.ignore(); //Limpiar el buffer de entrada
+		switch (opcionPrincipal) {
+		case 1:
+			gestorL.llenar();
+			gestorU.llenar();
+			gestorB.llenar();
+			cout << "Datos llenados exitosamente." << endl;
+			break;
+		case 2:
+			menuListados(gestorL, gestorU, gestorB);
+			break;
+		case 3:
+			menuBusqueda(gestorL, gestorU, gestorB);
+			break;
+		case 0:
+			cout << "Saliendo del programa..." << endl;
+			break;
+		default:
+			cout << "Opcion invalida. Intente de nuevo." << endl;
+		}
+	} while (opcionPrincipal != 0);
+}
+int main() {
+	srand(time(nullptr));
+	// Crear instancias de los gestores de libros, usuarios y bibliotecarios
+	GestorLibros gestorL;
+	GestorUsuarios gestorU;
+	GestorBibliotecarios gestorB;
+	// Llamar a la funciÃ³n del menÃº principal, pasando los gestores como argumentos
+	menuPrincipal(gestorL, gestorU, gestorB);
 	return 0;
- }
+}
